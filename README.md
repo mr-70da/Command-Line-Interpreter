@@ -47,11 +47,11 @@ The CLI also includes internal commands:
    ```
 4. Run the program:
    ```bash
-   java SimpleCLI
+   java CLI
    ```
 
 ## Usage
-1. After running `SimpleCLI`, you’ll be presented with a command prompt.
+1. After running `CLI`, you’ll be presented with a command prompt.
 2. Enter any of the supported commands listed above to interact with the CLI.
 3. Use `help` for a list of available commands.
 4. Use `exit` to close the CLI session.
@@ -73,12 +73,3 @@ The CLI also includes internal commands:
   ```shell
   ls > output.txt
   ```
-
-## Contributing
-Contributions are welcome! Please fork the repository and submit a pull request for any improvements or additional features.
-
-## License
-This project is licensed under the MIT License.
-
-## Acknowledgments
-Inspired by Unix/Linux shell functionality and designed to simulate basic shell command execution in a simplified Java CLI environment.
