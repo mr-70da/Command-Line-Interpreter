@@ -1,7 +1,3 @@
-Certainly! Here’s the README in Markdown format, ready for use:
-
----
-
 # Command Line Interpreter (CLI)
 
 This project is a basic Command Line Interpreter (CLI) inspired by Unix/Linux shells. The CLI allows users to execute common system commands and includes internal commands for additional functionality.
