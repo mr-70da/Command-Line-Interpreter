@@ -44,6 +44,9 @@ public class CLI {
                 else if(command.startsWith("mkdir")){
                     makeDirectory(command);
                 }
+                else if (command.startsWith("rmdir")) {
+                    removeDirectory(command);
+                }
                 else{
                     System.out.println("wrong command.");
                     errorCnt++;
@@ -89,6 +92,10 @@ public class CLI {
         }
     }
 
+
+
+
+    //mkdir
     private static void makeDirectory(String command){
         String parts[] = command.split(" ");
         if (parts.length<2) {
@@ -104,6 +111,64 @@ public class CLI {
 
     }
     
+
+   private static void _makeDirectory(String directoryPath){
+       File directory  = new File(currentDirectory,directoryPath);
+        if (directory.exists()) {
+            System.err.println("Directory already exists: " + directory.getPath());
+            return;
+        }
+        boolean created = directory.mkdir();
+        if (created) {
+            System.out.println("Directory created successfully: " + directory.getPath());
+        } else {
+            System.out.println("Failed to create the directory: " + directory.getPath());
+        }        
+        
+    }
+
+
+
+
+    //rmdir
+    private static void removeDirectory(String command){
+        String parts[] = command.split(" ");
+        if (parts.length<2) {
+            System.out.println("Please specify a directory.");
+            return;
+        }
+
+        String directoryPathTemp = command.substring(5).trim();
+        List<String> folders = parseDirectoryPath(directoryPathTemp);
+
+        for (String folder : folders) {
+            _removeDirectory(folder);
+        }
+
+    }
+    private static void _removeDirectory(String directoryPath){
+        File directory  = new File(currentDirectory,directoryPath);
+
+        if (!directory.exists()) {
+            System.err.println("Directory does not exist: " + directory.getPath());
+            return;
+        }
+
+        if (directory.isDirectory() && directory.list().length > 0) {
+            System.err.println("Directory is not empty.");
+            return;
+        }
+
+        boolean isDeleted = directory.delete();
+        if (isDeleted) {
+            System.out.println("Directory deleted successfully: " + directory.getPath());
+        }
+        else{
+            System.out.println("Failed to delete the directory: " + directory.getPath());
+        }
+    }
+
+    //parsing directory
     private static List<String> parseDirectoryPath(String directoryPathTemp){
         List<String> folders = new ArrayList<>();
 
@@ -140,46 +205,6 @@ public class CLI {
         return folders;
     }
 
-
-   private static void _makeDirectory(String directoryPath){
-        String[] pathParts = directoryPath.split("/");
-        File current = currentDirectory;
-        for (int i = 0; i < pathParts.length; i++) {
-            File subDirectory = new File(current, pathParts[i]);
-            if (i == pathParts.length - 1) { // new file to be created
-                if (subDirectory.exists()) {
-                    System.out.println("Directory already exists: " + subDirectory.getPath());
-                }
-                else{
-                    boolean isCreated = subDirectory.mkdir();
-                    if (isCreated) {
-                        System.out.println("Directory created successfully: " + subDirectory.getPath());
-                    }
-                    else{
-                        System.out.println("Failed to create directory: " + subDirectory.getPath());
-                    }
-                }
-            }
-            else{
-                if (!subDirectory.exists() || !subDirectory.isDirectory()) {
-                    System.out.println("No such file or directory: " + subDirectory.getPath());
-                    return;
-                }       
-            }
-            current = subDirectory;
-            }
-        
-        
-        
-    }
-
-
-
-
-
-   
-
-    private static void removeDirectory(String command){}
 
 }
 
