@@ -1,7 +1,10 @@
 package CLI;
 
 import java.io.File;
+import java.util.List;
 import java.util.Scanner;
+import java.util.ArrayList;
+
 
 public class CLI {
     private static File currentDirectory = new File(System.getProperty("user.dir"));
@@ -86,23 +89,63 @@ public class CLI {
         }
     }
 
-
     private static void makeDirectory(String command){
         String parts[] = command.split(" ");
         if (parts.length<2) {
             System.out.println("Please specify a directory.");
             return;
         }
-        String directoryPath = command.substring(5).trim();
+        String directoryPathTemp = command.substring(5).trim();
+        List<String> folders = parseDirectoryPath(directoryPathTemp);
 
+        for (String folder : folders) {
+            _makeDirectory(folder);
+        }
+
+    }
+    
+    private static List<String> parseDirectoryPath(String directoryPathTemp){
+        List<String> folders = new ArrayList<>();
+
+        StringBuilder currentFolder = new StringBuilder();
+        boolean  insideQuotes = false;
+        char quote = '\0';
+
+        for(int i = 0 ; i < directoryPathTemp.length(); i++){
+            char current = directoryPathTemp.charAt(i);
+
+            if ((current == '"' || current == '\'')&& (quote == '\0' || quote == current)) {
+                insideQuotes = !insideQuotes;
+                quote = insideQuotes? current : '\0' ;//0 for end //current if beginning
+
+                if (!insideQuotes && currentFolder.length() > 0) { //ending quote
+                    folders.add(currentFolder.toString());
+                    currentFolder.setLength(0); //fady
+                }
+            }
+            else if (current == ' ' && !insideQuotes){
+                if (currentFolder.length() > 0) {
+                    folders.add(currentFolder.toString());
+                    currentFolder.setLength(0); //fady
+                }
+            }
+            else{
+                currentFolder.append(current);
+            }
+        }
+        //last folder
+        if (currentFolder.length() > 0) {
+            folders.add(currentFolder.toString());
+        }
+        return folders;
+    }
+
+
+   private static void _makeDirectory(String directoryPath){
         String[] pathParts = directoryPath.split("/");
-
         File current = currentDirectory;
-
         for (int i = 0; i < pathParts.length; i++) {
-
             File subDirectory = new File(current, pathParts[i]);
-
             if (i == pathParts.length - 1) { // new file to be created
                 if (subDirectory.exists()) {
                     System.out.println("Directory already exists: " + subDirectory.getPath());
@@ -129,6 +172,14 @@ public class CLI {
         
         
     }
+
+
+
+
+
+   
+
+    private static void removeDirectory(String command){}
 
 }
 
