@@ -37,7 +37,11 @@ public class CLI {
                     System.out.print(currentDirectory.getAbsolutePath());
                 }else if(command.startsWith("cd")){
                     changeDirectory(command);
-                }else{
+                }
+                else if(command.startsWith("mkdir")){
+                    makeDirectory(command);
+                }
+                else{
                     System.out.println("wrong command.");
                     errorCnt++;
                     if(errorCnt==3){
@@ -81,4 +85,50 @@ public class CLI {
             }
         }
     }
+
+
+    private static void makeDirectory(String command){
+        String parts[] = command.split(" ");
+        if (parts.length<2) {
+            System.out.println("Please specify a directory.");
+            return;
+        }
+        String directoryPath = command.substring(5).trim();
+
+        String[] pathParts = directoryPath.split("/");
+
+        File current = currentDirectory;
+
+        for (int i = 0; i < pathParts.length; i++) {
+
+            File subDirectory = new File(current, pathParts[i]);
+
+            if (i == pathParts.length - 1) { // new file to be created
+                if (subDirectory.exists()) {
+                    System.out.println("Directory already exists: " + subDirectory.getPath());
+                }
+                else{
+                    boolean isCreated = subDirectory.mkdir();
+                    if (isCreated) {
+                        System.out.println("Directory created successfully: " + subDirectory.getPath());
+                    }
+                    else{
+                        System.out.println("Failed to create directory: " + subDirectory.getPath());
+                    }
+                }
+            }
+            else{
+                if (!subDirectory.exists() || !subDirectory.isDirectory()) {
+                    System.out.println("No such file or directory: " + subDirectory.getPath());
+                    return;
+                }       
+            }
+            current = subDirectory;
+            }
+        
+        
+        
+    }
+
 }
+
