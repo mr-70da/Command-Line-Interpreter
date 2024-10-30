@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 
+
 public class CLI {
     private static File currentDirectory = new File(System.getProperty("user.dir"));
     public static void main(String[] args){
@@ -169,42 +170,62 @@ public class CLI {
     }
 
     //parsing directory
-    private static List<String> parseDirectoryPath(String directoryPathTemp){
+    private static List<String> parseDirectoryPath(String directoryPathTemp) {
         List<String> folders = new ArrayList<>();
-
         StringBuilder currentFolder = new StringBuilder();
-        boolean  insideQuotes = false;
-        char quote = '\0';
-
-        for(int i = 0 ; i < directoryPathTemp.length(); i++){
-            char current = directoryPathTemp.charAt(i);
-
-            if ((current == '"' || current == '\'')&& (quote == '\0' || quote == current)) {
-                insideQuotes = !insideQuotes;
-                quote = insideQuotes? current : '\0' ;//0 for end //current if beginning
-
-                if (!insideQuotes && currentFolder.length() > 0) { //ending quote
-                    folders.add(currentFolder.toString());
-                    currentFolder.setLength(0); //fady
-                }
+        boolean inQuotes = false;
+        boolean escaped = false;
+        Character quoteType = '\0';
+    
+        for (int i = 0; i < directoryPathTemp.length(); i++) {
+            char c = directoryPathTemp.charAt(i);
+    
+            if (escaped) {
+                currentFolder.append(c);
+                escaped = false;
+                continue;
             }
-            else if (current == ' ' && !insideQuotes){
+    
+            if (c == '\\') {
+                escaped = true;
+                continue;
+            }
+    
+            if (c == '"' || c == '\'') {
+                if (!inQuotes) {
+                    inQuotes = true;
+                    quoteType = c;
+                }
+                else if (c == quoteType) {
+                    inQuotes = false;
+                }
+                else {
+                    currentFolder.append(c);
+                }
+            } 
+            else if (c == ' ' && !inQuotes) {
                 if (currentFolder.length() > 0) {
                     folders.add(currentFolder.toString());
-                    currentFolder.setLength(0); //fady
+                    currentFolder.setLength(0);
                 }
-            }
-            else{
-                currentFolder.append(current);
+            } else {
+                currentFolder.append(c);
             }
         }
-        //last folder
+    
         if (currentFolder.length() > 0) {
             folders.add(currentFolder.toString());
         }
+    
+        if (inQuotes) {
+            System.err.println("Invalid argument: Unmatched quote");
+            return null;
+        }
+    
         return folders;
     }
-
+        
+ 
 
 }
 
