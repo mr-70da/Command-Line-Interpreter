@@ -8,13 +8,13 @@ public class CLI {
     public static void main(String[] args){
         int errorCnt=0;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to command line interpreter type 'exist' to quit or type 'help' to show available commands' menu.");
-        boolean isExist = false;
-        while(!isExist){
+        System.out.println("Welcome to command line interpreter type 'exit' to quit or type 'help' to show available commands' menu.");
+        boolean Exists = false;
+        while(!Exists){
             System.out.print(currentDirectory.getAbsolutePath()+"> ");
             String command = scanner.nextLine();
             if(command.equals("exit")){
-                isExist = true;
+                Exists = true;
             }else if (command.equals("help")){
                 System.out.println("pw: Display your current location path.");
                 System.out.println("cd: Display the current directory in the specified drive.");
@@ -32,7 +32,7 @@ public class CLI {
                 System.out.println("|: Pass the output of the command on the left side of the pipe to the command on the right side of the pipe");
 
             }else{
-                String s[] = command.split(" ");
+                //String s[] = command.split(" ");
                 if(command.equals("pwd")){
                     System.out.print(currentDirectory.getAbsolutePath());
                 }else if(command.startsWith("cd")){
@@ -54,13 +54,19 @@ public class CLI {
 
 
         }
-
+        scanner.close();
 
     }
     private static void changeDirectory(String command) {
         String parts[] = command.split(" ");
         if (parts.length<2) {
-            System.out.println("Please specify a directory.");
+            // System.out.println("Please specify a directory.");
+            currentDirectory = new File(System.getProperty("user.dir"));
+            return;
+        }
+        if(parts.length > 2)
+        {
+            System.err.println("Too many arguments");
             return;
         }
         String directoryPath = command.substring(3).trim();
