@@ -60,16 +60,7 @@ public class CLI {
                     removeFile(command);
                 }
                 else{
-                    System.out.println("wrong command.");
-                    errorCnt++;
-                    if(errorCnt==3){
-                        System.out.println("dah enta ghaby ebn metnaka.");
-                    }else if(errorCnt==4){
-                        System.out.println("laa kosomk ba2a.");
-                    }else if(errorCnt==5){
-                        System.out.println("yabnl el sharmota estkhadem 'help' talma gahel keda");
-                    }
-
+                    System.err.println("wrong command.");
                 }
 
             }
@@ -82,7 +73,7 @@ public class CLI {
     private static void changeDirectory(String command) {
         String parts[] = command.split(" ");
         if (parts.length<2) {
-            System.out.println("Please specify a directory.");
+            System.err.println("Please specify a directory.");
             return;
         }
         String directoryPath = command.substring(3).trim();
