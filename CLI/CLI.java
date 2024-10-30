@@ -56,6 +56,9 @@ public class CLI {
                 else if (command.startsWith("mv")) {
                     moveFileOrDirectory(command);
                 }
+                else if(command.startsWith("rm")){
+                    removeFile(command);
+                }
                 else{
                     System.out.println("wrong command.");
                     errorCnt++;
@@ -228,6 +231,41 @@ public class CLI {
         }
     }
 
+
+    //rm
+    private static void removeFile(String command){
+        List<String> parts = parseDirectoryPath(command.substring(2).trim());
+        
+        if (parts == null ||parts.size() < 1) {
+            System.out.println("Please provide at least one file to remove.");
+            return;
+        }
+
+        for(String part : parts) {
+            Path filePath = Paths.get(currentDirectory.getAbsolutePath(), part);
+
+            if (!Files.exists(filePath)) {
+                System.err.println("File does not exist: " + filePath);
+                continue;
+            }
+
+            if (Files.isDirectory(filePath)){
+                System.err.println("Error: cannot remove directory with rm. Use rmdir to remove directories");
+                continue;
+            }
+
+            try{
+                Files.delete(filePath);
+                System.out.println("Removed file: " + filePath);
+            }
+            catch (IOException e){
+                System.err.println("Failed to remove file " + filePath + ": " + e.getMessage());
+            }
+        }
+
+        
+
+    }
     //parsing directory
     private static List<String> parseDirectoryPath(String directoryPathTemp) {
         List<String> folders = new ArrayList<>();
