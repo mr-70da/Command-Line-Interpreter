@@ -3,6 +3,8 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 import java.io.File;
 
 public class LS_Command  implements OptionedCommand,WriterCommand {
@@ -29,6 +31,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
     }
     public void execute() throws Exception
     {
+        File currentDirectory = new File(System.getProperty("user.dir"));
         switch (Option) {
             case "a":
                 if(operands.isEmpty())
@@ -54,6 +57,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                             directory = new File(".");
                         }
                         else {
+                            directoryPath = (currentDirectory.getAbsolutePath() + "/" +directoryPath);
                             directory = new File(directoryPath);
                         }
                         if (directory.isDirectory()){
@@ -73,7 +77,48 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                 }      
                 break;
             case "r":
-
+                if (operands.isEmpty()) {
+                    File directory;
+                    directory = new File(".");
+                    if (directory.isDirectory()) {
+                        File[] files = directory.listFiles();
+                        if (files != null) {
+                            Arrays.sort(files,Collections.reverseOrder());
+                            for ( File file : files) {
+                                if ( !file.isHidden()) {
+                                    System.out.println(file.getName());
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    for(String directoryPath : operands)
+                    {
+                        File directory;
+                        directoryPath = (currentDirectory.getAbsolutePath() + "/" + directoryPath);
+                        if (directoryPath.isEmpty()) {
+                            directory = new File(".");
+                        }
+                        else {
+                            directory = new File(directoryPath);
+                        }
+                        if (directory.isDirectory()) {
+                            File[] files = directory.listFiles();
+                            if (files != null) {
+                                Arrays.sort(files,Collections.reverseOrder());
+                                for ( File file : files) {
+                                    if ( !file.isHidden()) {
+                                        System.out.println(file.getName());
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            throw new InvalidPathException("Not a Valid Path");
+                        }
+                    }
+                }
                 break;
             default:
                 if(operands.isEmpty())
@@ -101,6 +146,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                             directory = new File(".");
                         }
                         else {
+                            directoryPath = (currentDirectory.getAbsolutePath() + "/" +directoryPath);
                             directory = new File(directoryPath);
                         }
                         if (directory.isDirectory()){
