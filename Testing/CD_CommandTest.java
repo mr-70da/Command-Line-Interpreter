@@ -76,10 +76,10 @@ class CD_CommandTest {
 
     @Test
     void testEmptyOperandRemainsInCurrentDirectory() throws Exception {
-        CLI.setDirr(new File(System.getProperty("user.home")));  // Set initial directory to home
+        CLI.setDirr(new File(System.getProperty("user.dir")));  // Set initial directory to home
         CD_Command cdCommand = new CD_Command();
         cdCommand.execute();
-        assertEquals(System.getProperty("user.home"), CLI.getDirr().getCanonicalPath(), "Should remain in the current directory if operand is empty.");
+        assertEquals(System.getProperty("user.dir"), CLI.getDirr().getCanonicalPath(), "Should remain in the current directory if operand is empty.");
     }
 
     @Test
