@@ -159,7 +159,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
         }
         else
         {
-            throw new InvalidOptionException("Invalid Option for command ls\n!!");
+            throw new InvalidOptionException("ls: Ivalid Option     Options: '-a' '-r'");
         }
     }
 }

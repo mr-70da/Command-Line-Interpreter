@@ -1,6 +1,5 @@
 package CLI;
 
-import java.util.Stack;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -9,19 +8,29 @@ public class CommandProcessor {
 
     public static List<Command> CommandParser(String comm) throws Exception {
         List<Command> ParsedCommands;
-        Stack<Character> stk = new Stack<>();
         ParsedCommands = new ArrayList<Command>();
         String subs = new String("");
         boolean insertion = false;
+        boolean inQuotes = false;
+        boolean escaped = false;
+        boolean foundCommand = false;
+        char quoteType = '\0';
         String opt = "";
         
         for (int i = 0; i < comm.length(); ++i) {
-            if (comm.charAt(i) == '\\' && i + 1 < comm.length()) {
-                subs += comm.charAt(i + 1);
-                i++;
+            if(escaped)
+            {
+                subs+=(comm.charAt(i));
+                escaped = false;
+            }
+            if (comm.charAt(i) == '\\') {
+                // subs += comm.charAt(i + 1);
+                // i++;
+                escaped = true;
                 continue;
             }
-            if (comm.charAt(i) == '-' && !stk.empty() && subs.isEmpty() && i + 1 < comm.length() && !insertion) {
+            // System.out.println(comm.charAt(i) == '-');
+            if (comm.charAt(i) == '-' && !inQuotes && foundCommand && subs.isEmpty() && i + 1 < comm.length() && !insertion) {
                 opt = ""+comm.charAt(i + 1);
                 if(opt ==" ")
                 {
@@ -32,16 +41,19 @@ public class CommandProcessor {
                 continue;
             }
             if (comm.charAt(i) == '"' || comm.charAt(i) == '\'') {
-                if (stk.empty()) {
-                    stk.push(comm.charAt(i));
-                } else if (stk.peek().equals(comm.charAt(i))) {
-                    stk.pop();
-                } else {
-                    subs += comm.charAt(i);
+                if (!inQuotes) {
+                    inQuotes = true;
+                    quoteType = comm.charAt(i);
+                }
+                else if (comm.charAt(i) == quoteType) {
+                    inQuotes = false;
+                }
+                else {
+                    subs+= comm.charAt(i);
                 }
                 continue;
             }
-            if (comm.charAt(i) == '>' && i + 1 < comm.length() && comm.charAt(i + 1) == '>' && stk.empty()) {
+            if (comm.charAt(i) == '>' && i + 1 < comm.length() && comm.charAt(i + 1) == '>' && !inQuotes) {
                 insertion = true;
                 
                 //ParsedCommands.add(new AppendInsertion());
@@ -49,7 +61,7 @@ public class CommandProcessor {
                 subs = "";
                 continue;
             }
-            if (comm.charAt(i) == '>' && stk.empty()) {
+            if (comm.charAt(i) == '>' && !inQuotes) {
                 insertion = true;
                 //ParsedCommands.add(new OverwriteInsertion());
                 
@@ -65,32 +77,40 @@ public class CommandProcessor {
                         ((OptionedCommand)temp).setOption(""+opt);
                         ParsedCommands.set(ParsedCommands.size()-1, temp);
                     }   
-                    temp.appendOperand(subs);
-                    ParsedCommands.set(ParsedCommands.size() - 1, temp);   
+                    else
+                    {
+                        temp.appendOperand(opt);
+                        ParsedCommands.set(ParsedCommands.size() - 1, temp);   
+                    }
+                    opt = "";
                     continue;
                 }
-                if (subs.equals("cd") && stk.empty() && !insertion) {
+                if (subs.equals("cd") && !inQuotes && !insertion && !foundCommand) {
                     ParsedCommands.add(new CD_Command());
                     subs = "";
+                    foundCommand = true;
                     continue;
                 }
-                if (subs.equals("touch") && stk.empty() && !insertion) {
+                if (subs.equals("touch") && !inQuotes && !insertion && !foundCommand) {
                     //ParsedCommands.add(new TOUCH_Command());
                     subs = "";
+                    foundCommand = true;
                     continue;
                 }
-                if (subs.equals("mkdir") && stk.empty() && !insertion) {
+                if (subs.equals("mkdir") && !inQuotes && !insertion && !foundCommand) {
                     //ParsedCommands.add(new MKDIR_Command(subs));
                     
                     subs = "";
+                    foundCommand = true;
                     continue;
                 }
-                if (subs.equals("ls") && stk.empty() && !insertion) {
+                if (subs.equals("ls") && !inQuotes && !insertion && !foundCommand) {
                     ParsedCommands.add(new LS_Command());
                     subs = "";
+                    foundCommand = true;
                     continue;
                 }
-                if(stk.empty())
+                if(!inQuotes)
                 {
                     if(ParsedCommands.isEmpty())
                         throw new InvalidInputException("Invalid Command!\n");
@@ -101,7 +121,14 @@ public class CommandProcessor {
                     continue;
                 }
             }
-            subs += comm.charAt(i);
+            if(!opt.isEmpty())
+            {
+                opt+=comm.charAt(i);
+            }
+            else
+            {
+                subs+=comm.charAt(i);
+            }
         }
         if(!opt.isEmpty())
         {
@@ -114,23 +141,23 @@ public class CommandProcessor {
             temp.appendOperand(subs);
             ParsedCommands.set(ParsedCommands.size() - 1, temp);   
         }
-        else if (subs.equals("cd") && stk.empty() && !insertion) {
+        else if (subs.equals("cd") && !inQuotes && !insertion && !foundCommand) {
             ParsedCommands.add(new CD_Command());
             subs = "";
         }
-        else if (subs.equals("touch") && stk.empty() && !insertion) {
+        else if (subs.equals("touch") && !inQuotes && !insertion && !foundCommand) {
             //ParsedCommands.add(new TOUCH_Command());
             subs = "";
         }
-        else if (subs.equals("mkdir") && stk.empty() && !insertion) {
+        else if (subs.equals("mkdir") && !inQuotes && !insertion && !foundCommand) {
             //ParsedCommands.add(new MKDIR_Command(subs));
             subs = "";
         }
-        else if (subs.equals("ls") && stk.empty() && !insertion) {
+        else if (subs.equals("ls") && !inQuotes && !insertion && !foundCommand) {
             ParsedCommands.add(new LS_Command());
             subs = "";
         }
-        else if(stk.empty() && !subs.isEmpty())
+        else if(!inQuotes && !subs.isEmpty())
         {
             if(ParsedCommands.isEmpty())
                 throw new InvalidInputException("Invalid Command!\n");
@@ -140,7 +167,7 @@ public class CommandProcessor {
             subs = "";
 
         }
-        if (!stk.empty() || ParsedCommands.isEmpty())
+        if (inQuotes || ParsedCommands.isEmpty())
             throw new InvalidInputException("Invalid Command!\n");
         // else
         // {
