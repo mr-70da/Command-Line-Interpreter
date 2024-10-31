@@ -1,6 +1,7 @@
 package CLI;
 
 import java.io.File;
+
 import java.util.*;
 
 public class CLI {
@@ -23,14 +24,7 @@ public class CLI {
         System.out.println("|: Pass the output of the command on the left side of the pipe to the command on the right side of the pipe");
         System.out.println("exit: To end the terminal session");
     }
-    public static File getDirr()
-    {
-        return currentDirectory;
-    }
-    public static void setDirr(File newDirr)
-    {
-        currentDirectory = newDirr;
-    }
+    
     public void Run()
     {
         System.out.print(currentDirectory+"> ");
@@ -94,8 +88,8 @@ public class CLI {
                     System.out.print(currentDirectory+"> ");
                     command = scanner.nextLine();
                 }
+
             }
         }
         scanner.close();
     }
-}
