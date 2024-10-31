@@ -36,7 +36,7 @@ public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand
                 throw new FailedToCreate("Failed To Create File.\n");
             }
         }
-        FileWriter newF = new FileWriter(arg,true);
+        FileWriter newF = new FileWriter(directory,true);
         //newF.write("\n");
         newF.write(input);
         this.output = input;

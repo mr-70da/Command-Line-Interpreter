@@ -36,7 +36,7 @@ public class Insertion_Command implements Command,WriterCommand,ReaderCommand {
         {
             throw new FailedToCreate("Failed To Create File.\n");
         }
-        FileWriter newF = new FileWriter(arg);
+        FileWriter newF = new FileWriter(directory);
         newF.write(input);
         this.output = input;
         newF.close();

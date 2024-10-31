@@ -102,6 +102,12 @@ public class CommandProcessor {
                     foundCommand = true;
                     continue;
                 }
+                if (subs.equals("pwd") && !inQuotes && !insertion && !foundCommand) {
+                    ParsedCommands.add(new PWD_Command());
+                    subs = "";
+                    foundCommand = true;
+                    continue;
+                }
                 if (subs.equals("cat") && !inQuotes && !insertion && !foundCommand) {
                     ParsedCommands.add(new Concat_Command());
                     subs = "";
@@ -188,6 +194,10 @@ public class CommandProcessor {
         }
         else if (subs.equals("touch") && !inQuotes && !insertion && !foundCommand) {
             ParsedCommands.add(new Touch_Command());
+            subs = "";
+        }
+        else if(subs.equals("pwd") && !inQuotes && !insertion && !foundCommand) {
+            ParsedCommands.add(new PWD_Command());
             subs = "";
         }
         else if (subs.equals("cat") && !inQuotes && !insertion && !foundCommand) {
