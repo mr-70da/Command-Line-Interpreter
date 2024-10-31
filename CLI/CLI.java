@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.*;
 
 public class CLI {
-    // private static File currentDirectory = new File(System.getProperty("user.dir"));
+    private static File currentDirectory = new File(System.getProperty("user.dir"));
     // public static void main(String[] args){
     //     int errorCnt=0;
     //     Scanner scanner = new Scanner(System.in);
@@ -89,6 +89,7 @@ public class CLI {
     // }
     public void Run()
     {
+        System.out.print(currentDirectory+" ");
         Scanner scanner = new Scanner(System.in);
         String command = scanner.nextLine();
         List<Command> ParsedInstructions = new ArrayList<>();
