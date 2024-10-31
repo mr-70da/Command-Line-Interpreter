@@ -11,17 +11,27 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
     private static final Set<String> Options = new HashSet<>(Set.of("a","r"));
     private List<String> operands;
     private String Option;
+    private File directory;
     private String output;
     public LS_Command()
     {
         this.operands = new ArrayList<>();
         this.Option = new String("");
         this.output = new String("");
+        this.directory = CLI.getDirr();
     }
     public LS_Command(String operand)
     {
         this.operands = new ArrayList<>();
         this.operands.add(operand);
+        this.Option = new String("");
+        this.output = new String("");
+        this.directory = CLI.getDirr();
+    }
+    public LS_Command(File dirr)
+    {
+        this.directory = dirr;
+        this.operands = new ArrayList<>();
         this.Option = new String("");
         this.output = new String("");
     }
