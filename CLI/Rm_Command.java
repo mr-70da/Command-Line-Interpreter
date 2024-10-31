@@ -1,5 +1,7 @@
 package CLI;
+import java.util.Set;
 
+import java.util.HashSet;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,17 +10,21 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rm_Command implements Command {
+public class Rm_Command implements OptionedCommand {
     private List<String> operands;
-    
-    static File currentDirectory = new File(System.getProperty("user.dir"));
+
+    private static final Set<String> Options = new HashSet<>(Set.of("v"));
+    private String Option;
+
     public Rm_Command() {
         this.operands = new ArrayList<>();
+        this.Option = new String("");
     }
 
     public Rm_Command(String oper) {
         this.operands = new ArrayList<>();
         this.operands.add(oper);
+        this.Option = new String("");
     }
 
     public void appendOperand(String oper){
@@ -36,7 +42,7 @@ public class Rm_Command implements Command {
             System.out.println("Please provide at least one file to remove.");
             return;
         }
-
+        File currentDirectory = new File(System.getProperty("user.dir"));
         for(String part : parts) {
             Path filePath = Paths.get(currentDirectory.getAbsolutePath(), part);
 
@@ -52,11 +58,25 @@ public class Rm_Command implements Command {
 
             try{
                 Files.delete(filePath);
-                System.out.println("Removed file: " + filePath);
+                if(Option.equals("v"))
+                    System.out.println("Removed file: " + filePath);
             }
             catch (IOException e){
                 System.err.println("Failed to remove file " + filePath + ": " + e.getMessage());
             }
         }
     }
+
+    public void setOption(String opt) throws InvalidOptionException
+    {
+        if(Options.contains(opt))
+        {
+            this.Option = opt;
+        }
+        else
+        {
+            throw new InvalidOptionException("ls: Ivalid Option     Options: '-v'");
+        }
+    }
+
 }
