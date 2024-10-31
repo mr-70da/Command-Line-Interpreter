@@ -21,6 +21,13 @@ public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand
         this.output = "";
         currentDirectory = CLI.getDirr();
     }
+    public InsertAppend_Command(File dir)
+    {
+        this.arg = "";
+        this.input = "";
+        this.output = "";
+        currentDirectory = dir;
+    }
     public void execute(String ...Args) throws Exception
     {
         if(this.arg.isEmpty())
