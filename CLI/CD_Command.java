@@ -12,7 +12,7 @@ public class CD_Command implements Command {
     public void execute() throws Exception
     {
         File currentDirectory = CLI.getDirr();
-        File newDirectory = new File(this.operand);
+        File newDirectory = new File(currentDirectory.getAbsolutePath()+"/"+this.operand);
         if (newDirectory.isAbsolute()) {
             if (newDirectory.isDirectory()) {
                 currentDirectory = newDirectory;
@@ -28,7 +28,7 @@ public class CD_Command implements Command {
                 throw new InvalidPathException("Not a Valid Path");
             }
         }
-        CLI.setDirr(newDirectory);
+        CLI.setDirr(currentDirectory);
         
     }
     public void appendOperand(String op)

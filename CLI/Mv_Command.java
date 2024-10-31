@@ -16,7 +16,7 @@ public class Mv_Command implements OptionedCommand {
     
     private static final Set<String> Options = new HashSet<>(Set.of("v"));
     private String Option;
-
+    
     public Mv_Command() {
         this.operands = new ArrayList<>();
         this.Option = new String("");
@@ -44,7 +44,7 @@ public class Mv_Command implements OptionedCommand {
             return;
         }
 
-        File currentDirectory = new File(System.getProperty("user.dir"));
+        File currentDirectory = CLI.getDirr();
         List<Path> sourcePaths = new ArrayList<>();
         for (int i = 0; i < parts.size() - 1; i++) {
             sourcePaths.add(Paths.get(currentDirectory.getAbsolutePath(), parts.get(i)));

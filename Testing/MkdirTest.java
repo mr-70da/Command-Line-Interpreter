@@ -51,10 +51,10 @@ class MkdirTest {
 
     @Test
     void make_directory_invalid_path() throws Exception{
-        mkdirCommand.appendOperand("invalidDir*");
+        mkdirCommand.appendOperand("invalidDir/test1");
         mkdirCommand.execute();
 
-        File invalidDir = new File(testDirectory, "invalidDir*");
+        File invalidDir = new File(testDirectory, "invalidDir/test1");
         assertFalse(invalidDir.exists(), "Directory should not be created for invalid path");
     }
 

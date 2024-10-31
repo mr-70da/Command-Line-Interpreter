@@ -17,14 +17,14 @@ public class RmDir_Command implements OptionedCommand {
     public RmDir_Command() {
         this.operands = new ArrayList<>();
         this.Option = new String("");
-        this.currentDirectory = new File(System.getProperty("user.dir"));
+        this.currentDirectory = CLI.getDirr();
     }
 
     public RmDir_Command(String oper) {
         this.operands = new ArrayList<>();
         this.operands.add(oper);
         this.Option = new String("");
-        this.currentDirectory = new File(System.getProperty("user.dir"));
+        this.currentDirectory = CLI.getDirr();
     }
 
     public RmDir_Command(File currentDirectory) { // constructor for testing

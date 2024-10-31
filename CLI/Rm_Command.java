@@ -42,7 +42,7 @@ public class Rm_Command implements OptionedCommand {
             System.out.println("Please provide at least one file to remove.");
             return;
         }
-        File currentDirectory = new File(System.getProperty("user.dir"));
+        File currentDirectory = CLI.getDirr();
         for(String part : parts) {
             Path filePath = Paths.get(currentDirectory.getAbsolutePath(), part);
 

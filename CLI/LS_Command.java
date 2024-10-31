@@ -37,7 +37,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                 if(operands.isEmpty())
                 {
                     File directory;
-                    directory = new File(".");
+                    directory = currentDirectory;
                     if (directory.isDirectory()){
                         File[] files = directory.listFiles();
                         if ( files != null ) {
@@ -54,7 +54,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                     {
                         File directory;
                         if (directoryPath.isEmpty()) {
-                            directory = new File(".");
+                            directory = currentDirectory;
                         }
                         else {
                             directoryPath = (currentDirectory.getAbsolutePath() + "/" +directoryPath);
@@ -79,7 +79,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
             case "r":
                 if (operands.isEmpty()) {
                     File directory;
-                    directory = new File(".");
+                    directory = currentDirectory;
                     if (directory.isDirectory()) {
                         File[] files = directory.listFiles();
                         if (files != null) {
@@ -98,7 +98,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                         File directory;
                         directoryPath = (currentDirectory.getAbsolutePath() + "/" + directoryPath);
                         if (directoryPath.isEmpty()) {
-                            directory = new File(".");
+                            directory = currentDirectory;
                         }
                         else {
                             directory = new File(directoryPath);
@@ -124,7 +124,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                 if(operands.isEmpty())
                 {
                     File directory;
-                    directory = new File(".");
+                    directory = currentDirectory;
                     if (directory.isDirectory()){
                         File[] files = directory.listFiles();
                         if ( files != null ) {
@@ -143,7 +143,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                     {
                         File directory;
                         if (directoryPath.isEmpty()) {
-                            directory = new File(".");
+                            directory = currentDirectory;
                         }
                         else {
                             directoryPath = (currentDirectory.getAbsolutePath() + "/" +directoryPath);

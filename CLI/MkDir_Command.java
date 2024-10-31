@@ -17,13 +17,14 @@ public class MkDir_Command implements OptionedCommand {
     public MkDir_Command() {
         this.operands = new ArrayList<>();
         this.Option = new String("");
-        this.currentDirectory = new File(System.getProperty("user.dir"));
+        this.currentDirectory = CLI.getDirr();
     }
 
     public MkDir_Command(String oper) {
         this.operands = new ArrayList<>();
         this.operands.add(oper);
         this.Option = new String("");
+        this.currentDirectory = CLI.getDirr();
 
     }
 
