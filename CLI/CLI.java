@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays; //
+import java.util.Collections; //
 
 
 
@@ -312,7 +314,102 @@ public class CLI {
     
         return folders;
     }
+
+     public void ls(String directoryPath) { //
+        File directory;
+        if (directoryPath.isEmpty()) {
+            directory = new File(".");
+        } else {
+            directory = new File(directoryPath);
+        }
         
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            
+            if (files != null && files.length == 0) {
+                System.out.println("Directory is Empty");
+            } else {
+                for (File file : files) {
+                    if (!file.isHidden()) {
+                        System.out.println(file.getName());
+                    }
+                }
+            }
+        } else {
+            System.out.println("Not a Valid Path");
+        }
+    }
+
+    public void ls_a(String directoryPath){ //
+        File directory;
+        if (directoryPath.isEmpty()) {
+            directory = new File(".");
+        } else {
+            directory = new File(directoryPath);
+        }
+        
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            
+            if (files != null && files.length == 0) {
+                System.out.println("Directory is Empty");
+            } else {
+                for (File file : files) {
+                    System.out.println(file.getName());
+                }
+                
+            }
+                    
+        } 
+        else {
+            System.out.println("Not a Valid Path");
+        }
+    }
+
+      public void ls_r(String directoryPath){ //
+        File directory;
+        if (directoryPath.isEmpty()) {
+            directory = new File(".");
+        } else {
+            directory = new File(directoryPath);
+        }
+        
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            
+            if (files != null && files.length == 0) {
+                System.out.println("Directory is Empty");
+            } else {
+                Arrays.sort(files,Collections.reverseOrder());
+                for (File file : files) {
+                    if (!file.isHidden()) {
+                        System.out.println(file.getName());
+                    }
+                }
+            }
+        } else {
+            System.out.println("Not a Valid Path");
+        }
+    }
+
+    public void touch(String directoryPath){ //
+        File file = new File(directoryPath);
+        try {
+            if (file.exists()) {
+                file.setLastModified(System.currentTimeMillis());
+                System.out.println("FILE TIMESTAMP UPDATED");
+            }
+            else{
+                if (file.createNewFile()) {
+                    System.out.println(file.getName());
+                } else {
+                    System.out.println("Failed to create file.");
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
  
 
 }
