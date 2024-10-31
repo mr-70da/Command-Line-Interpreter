@@ -34,7 +34,7 @@ public class CD_Command implements Command {
             }
         }
         CLI.setDirr(currentDirectory);
-        
+
     }
     public void appendOperand(String op)
     {
@@ -44,5 +44,5 @@ public class CD_Command implements Command {
     {
         return this.operand.isEmpty();
     }
-    
+
 }
