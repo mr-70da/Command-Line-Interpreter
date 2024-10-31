@@ -12,17 +12,27 @@ public class MkDir_Command implements OptionedCommand {
     private static final Set<String> Options = new HashSet<>(Set.of("v"));
     private String Option;
 
+    private File currentDirectory; //For testing
+
     public MkDir_Command() {
         this.operands = new ArrayList<>();
         this.Option = new String("");
+        this.currentDirectory = new File(System.getProperty("user.dir"));
     }
 
     public MkDir_Command(String oper) {
         this.operands = new ArrayList<>();
         this.operands.add(oper);
         this.Option = new String("");
+
     }
 
+    public MkDir_Command(File currentDirectory) { // constructor for testing
+        this.operands = new ArrayList<>();
+        this.Option = "";
+        this.currentDirectory = currentDirectory;
+    }
+    
     public void appendOperand(String oper){
         this.operands.add(oper);
     }
@@ -41,7 +51,6 @@ public class MkDir_Command implements OptionedCommand {
 
 
     private void _makeDirectory(String directoryPath){
-    File currentDirectory = new File(System.getProperty("user.dir"));
     File directory  = new File(currentDirectory,directoryPath);
         if (directory.exists()) {
             System.err.println("Directory already exists: " + directory.getPath());
