@@ -16,16 +16,25 @@ public class Mv_Command implements OptionedCommand {
     
     private static final Set<String> Options = new HashSet<>(Set.of("v"));
     private String Option;
-    
+
+    private File currentDirectory; //For testing
     public Mv_Command() {
         this.operands = new ArrayList<>();
         this.Option = new String("");
+        this.currentDirectory = CLI.getDirr();
     }
 
     public Mv_Command(String oper) {
         this.operands = new ArrayList<>();
         this.operands.add(oper);
         this.Option = new String("");
+        this.currentDirectory = CLI.getDirr();
+    }
+
+    public Mv_Command(File currentDirectory) { // constructor for testing
+        this.operands = new ArrayList<>();
+        this.Option = "";
+        this.currentDirectory = currentDirectory;
     }
 
     public void appendOperand(String oper){
@@ -44,7 +53,6 @@ public class Mv_Command implements OptionedCommand {
             return;
         }
 
-        File currentDirectory = CLI.getDirr();
         List<Path> sourcePaths = new ArrayList<>();
         for (int i = 0; i < parts.size() - 1; i++) {
             sourcePaths.add(Paths.get(currentDirectory.getAbsolutePath(), parts.get(i)));

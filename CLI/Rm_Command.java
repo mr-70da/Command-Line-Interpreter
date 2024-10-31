@@ -16,15 +16,24 @@ public class Rm_Command implements OptionedCommand {
     private static final Set<String> Options = new HashSet<>(Set.of("v"));
     private String Option;
 
+    private File currentDirectory; //For testing
     public Rm_Command() {
         this.operands = new ArrayList<>();
         this.Option = new String("");
+        this.currentDirectory = CLI.getDirr();
     }
 
     public Rm_Command(String oper) {
         this.operands = new ArrayList<>();
         this.operands.add(oper);
         this.Option = new String("");
+        this.currentDirectory = CLI.getDirr();
+    }
+
+    public Rm_Command(File currentDirectory) { // constructor for testing
+        this.operands = new ArrayList<>();
+        this.Option = "";
+        this.currentDirectory = currentDirectory;
     }
 
     public void appendOperand(String oper){
@@ -42,7 +51,7 @@ public class Rm_Command implements OptionedCommand {
             System.out.println("Please provide at least one file to remove.");
             return;
         }
-        File currentDirectory = CLI.getDirr();
+
         for(String part : parts) {
             Path filePath = Paths.get(currentDirectory.getAbsolutePath(), part);
 
