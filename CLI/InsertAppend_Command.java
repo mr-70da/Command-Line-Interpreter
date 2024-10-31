@@ -30,14 +30,12 @@ public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand
         File directory = new File(currentDirectory,arg);
         if(!(directory.exists() && directory.isFile()))
         {
-            //directory.delete();
             if(!directory.createNewFile())
             {
                 throw new FailedToCreate("Failed To Create File.\n");
             }
         }
         FileWriter newF = new FileWriter(directory,true);
-        //newF.write("\n");
         newF.write(input);
         this.output = input;
         newF.close();
