@@ -87,6 +87,14 @@ public class CLI {
     //         }
     //     }
     // }
+    public static File getDirr()
+    {
+        return currentDirectory;
+    }
+    public static void setDirr(File newDirr)
+    {
+        currentDirectory = newDirr;
+    }
     public void Run()
     {
         System.out.print(currentDirectory+"> ");

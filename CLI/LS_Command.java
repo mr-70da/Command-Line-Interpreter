@@ -31,7 +31,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
     }
     public void execute() throws Exception
     {
-        File currentDirectory = new File(System.getProperty("user.dir"));
+        File currentDirectory = CLI.getDirr();
         switch (Option) {
             case "a":
                 if(operands.isEmpty())

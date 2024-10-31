@@ -1,22 +1,44 @@
 package CLI;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
 
 public class CD_Command implements Command {
-    private List<String> operands;
+    private String operand;
     public CD_Command() {
-        this.operands = new ArrayList<>();
+        this.operand = "";
     }
     public CD_Command(String oper) {
-        this.operands = new ArrayList<>();
-        this.operands.add(oper);
+        this.operand = oper;
     }
-    public void execute()
+    public void execute() throws Exception
     {
-
+        File currentDirectory = CLI.getDirr();
+        File newDirectory = new File(this.operand);
+        if (newDirectory.isAbsolute()) {
+            if (newDirectory.isDirectory()) {
+                currentDirectory = newDirectory;
+            } else {
+                // System.out.println("Not a directory: " + this.operand);
+                throw new InvalidPathException("Not a Valid Path");
+            }
+        } else {
+            File relativeDir = new File(currentDirectory, this.operand);
+            if (relativeDir.isDirectory()) {
+                currentDirectory = relativeDir;
+            } else {
+                throw new InvalidPathException("Not a Valid Path");
+            }
+        }
+        CLI.setDirr(newDirectory);
+        
     }
     public void appendOperand(String op)
     {
-        this.operands.add(op);
+        this.operand = (op);
     }
+    public boolean emptyOperand()
+    {
+        return this.operand.isEmpty();
+    }
+    
 }
+

@@ -128,6 +128,8 @@ public class CommandProcessor {
                     if(ParsedCommands.isEmpty())
                         throw new InvalidInputException("Invalid Command!\n");
                     Command temp = ParsedCommands.getLast();
+                    if(temp instanceof CD_Command && !((CD_Command)temp).emptyOperand())
+                        throw new TooManyArgsException("cd: Too Many Arguments!\n");
                     temp.appendOperand(subs);
                     ParsedCommands.set(ParsedCommands.size() - 1, temp);
                     subs = "";
