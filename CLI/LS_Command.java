@@ -12,14 +12,12 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
     private String output;
     public LS_Command()
     {
-        //super(comm);
         this.operands = new ArrayList<>();
         this.Option = new String("");
         this.output = new String("");
     }
     public LS_Command(String operand)
     {
-        //super(comm);
         this.operands = new ArrayList<>();
         this.operands.add(operand);
         this.Option = new String("");
@@ -41,16 +39,10 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                         File[] files = directory.listFiles();
                         if ( files != null ) {
                             for(File file : files){
-                                //if ( !file.isHidden()) {
                                     this.output += file.getName();
                                     this.output += "\n";
-                                    //System.out.println(file.getName());
-                                //}
                             }
-                        }
-                        // else {
-                        //     System.out.println("Directory is Empty");
-                        // }    
+                        }    
                     }
                 }
                 else
@@ -68,20 +60,13 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                             File[] files = directory.listFiles();
                             if ( files != null ) {
                                 for(File file : files){
-                                    //if ( !file.isHidden()) {
-                                        this.output += file.getName();
-                                        this.output+='\n';
-                                        //System.out.println(file.getName());
-                                // }
+                                    this.output += file.getName();
+                                    this.output+='\n';
                                 }
-                            }
-                            // else {
-                            //     System.out.println("Directory is Empty");
-                            // }    
+                            }  
                         }
                         else {
                             throw new InvalidPathException("Not a Valid Path");
-                            // System.out.println("Not a Valid Path");
                         }
                         this.output+="\n";
                     }
@@ -102,13 +87,9 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                                 if ( !file.isHidden()) {
                                     this.output += file.getName();
                                     this.output += "\n";
-                                    //System.out.println(file.getName());
                                 }
                             }
-                        }
-                        // else {
-                        //     System.out.println("Directory is Empty");
-                        // }    
+                        } 
                     }
                 }
                 else
@@ -129,17 +110,12 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                                     if ( !file.isHidden()) {
                                         this.output += file.getName();
                                         this.output+='\n';
-                                        //System.out.println(file.getName());
                                     }
                                 }
-                            }
-                            // else {
-                            //     System.out.println("Directory is Empty");
-                            // }    
+                            }  
                         }
                         else {
                             throw new InvalidPathException("Not a Valid Path");
-                            // System.out.println("Not a Valid Path");
                         }
                         this.output+="\n";
                     }
