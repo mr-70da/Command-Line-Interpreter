@@ -1,5 +1,7 @@
 package CLI;
+import java.util.Set;
 
+import java.util.HashSet;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,17 +11,21 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mv_Command implements Command {
+public class Mv_Command implements OptionedCommand {
     private List<String> operands;
     
-    static File currentDirectory = new File(System.getProperty("user.dir"));
+    private static final Set<String> Options = new HashSet<>(Set.of("v"));
+    private String Option;
+
     public Mv_Command() {
         this.operands = new ArrayList<>();
+        this.Option = new String("");
     }
 
     public Mv_Command(String oper) {
         this.operands = new ArrayList<>();
         this.operands.add(oper);
+        this.Option = new String("");
     }
 
     public void appendOperand(String oper){
@@ -38,7 +44,7 @@ public class Mv_Command implements Command {
             return;
         }
 
-        
+        File currentDirectory = new File(System.getProperty("user.dir"));
         List<Path> sourcePaths = new ArrayList<>();
         for (int i = 0; i < parts.size() - 1; i++) {
             sourcePaths.add(Paths.get(currentDirectory.getAbsolutePath(), parts.get(i)));
@@ -73,11 +79,25 @@ public class Mv_Command implements Command {
 
                 // Perform the move operation
                 Files.move(sourcePath, actualDestination, StandardCopyOption.REPLACE_EXISTING);
-                System.out.println("Moved/Rename " + sourcePath + " to " + actualDestination);
+                if(Option.equals("v"))
+                    System.out.println("Moved/Rename " + sourcePath + " to " + actualDestination);
             } catch (IOException e) {
                 System.err.println("Failed to move " + sourcePath + " to " + actualDestination + ": " + e.getMessage());
             }
         }
     }
+
+    public void setOption(String opt) throws InvalidOptionException
+    {
+        if(Options.contains(opt))
+        {
+            this.Option = opt;
+        }
+        else
+        {
+            throw new InvalidOptionException("ls: Ivalid Option     Options: '-v'");
+        }
+    }
+
 
 }
