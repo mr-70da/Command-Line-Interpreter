@@ -11,14 +11,14 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
     private static final Set<String> Options = new HashSet<>(Set.of("a","r"));
     private List<String> operands;
     private String Option;
-    private File directory;
+    private File currentDirectory;
     private String output;
     public LS_Command()
     {
         this.operands = new ArrayList<>();
         this.Option = new String("");
         this.output = new String("");
-        this.directory = CLI.getDirr();
+        currentDirectory = CLI.getDirr();
     }
     public LS_Command(String operand)
     {
@@ -26,11 +26,11 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
         this.operands.add(operand);
         this.Option = new String("");
         this.output = new String("");
-        this.directory = CLI.getDirr();
+        currentDirectory = CLI.getDirr();
     }
     public LS_Command(File dirr)
     {
-        this.directory = dirr;
+        currentDirectory = dirr;
         this.operands = new ArrayList<>();
         this.Option = new String("");
         this.output = new String("");
@@ -41,7 +41,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
     }
     public void execute(String ...ar) throws Exception
     {
-        File currentDirectory = CLI.getDirr();
+       
         switch (Option) {
             case "a":
                 if(operands.isEmpty())
