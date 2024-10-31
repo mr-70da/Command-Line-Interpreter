@@ -89,25 +89,29 @@ public class CLI {
     // }
     public void Run()
     {
-        System.out.print(currentDirectory+" ");
+        System.out.print(currentDirectory+"> ");
         Scanner scanner = new Scanner(System.in);
         String command = scanner.nextLine();
-        List<Command> ParsedInstructions = new ArrayList<>();
-        scanner.close();
-        try{
-            ParsedInstructions = CommandProcessor.CommandParser(command);
-            for(Command comm : ParsedInstructions)
-            {
-                comm.execute();
-                if(comm instanceof WriterCommand)
+        while (!command.equals("exit")) {
+            List<Command> ParsedInstructions = new ArrayList<>();
+            try{
+                ParsedInstructions = CommandProcessor.CommandParser(command);
+                for(Command comm : ParsedInstructions)
                 {
-                    System.out.println(((WriterCommand)comm).Output());
+                    comm.execute();
+                    if(comm instanceof WriterCommand)
+                    {
+                        System.out.println(((WriterCommand)comm).Output());
+                    }
                 }
             }
+            catch(Exception e)
+            {
+                System.err.println(e.getMessage());
+            }
+            System.out.print(currentDirectory+"> ");
+            command = scanner.nextLine();
         }
-        catch(Exception e)
-        {
-            System.err.println(e.getMessage());
-        } 
+        scanner.close();
     }
 }

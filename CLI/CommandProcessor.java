@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class CommandProcessor {
-    // private List<String> operand;
 
     public static List<Command> CommandParser(String comm) throws Exception {
         List<Command> ParsedCommands;
@@ -24,12 +23,9 @@ public class CommandProcessor {
                 escaped = false;
             }
             if (comm.charAt(i) == '\\') {
-                // subs += comm.charAt(i + 1);
-                // i++;
                 escaped = true;
                 continue;
             }
-            // System.out.println(comm.charAt(i) == '-');
             if (comm.charAt(i) == '-' && !inQuotes && foundCommand && subs.isEmpty() && i + 1 < comm.length() && !insertion) {
                 opt = ""+comm.charAt(i + 1);
                 if(opt ==" ")
@@ -98,8 +94,25 @@ public class CommandProcessor {
                     continue;
                 }
                 if (subs.equals("mkdir") && !inQuotes && !insertion && !foundCommand) {
-                    //ParsedCommands.add(new MKDIR_Command(subs));
-                    
+                    ParsedCommands.add(new MkDir_Command());
+                    subs = "";
+                    foundCommand = true;
+                    continue;
+                }
+                if (subs.equals("rmdir") && !inQuotes && !insertion && !foundCommand) {
+                    ParsedCommands.add(new RmDir_Command());
+                    subs = "";
+                    foundCommand = true;
+                    continue;
+                }
+                if (subs.equals("rm") && !inQuotes && !insertion && !foundCommand) {
+                    ParsedCommands.add(new Rm_Command());
+                    subs = "";
+                    foundCommand = true;
+                    continue;
+                }
+                if (subs.equals("mv") && !inQuotes && !insertion && !foundCommand) {
+                    ParsedCommands.add(new Mv_Command());
                     subs = "";
                     foundCommand = true;
                     continue;
@@ -150,7 +163,7 @@ public class CommandProcessor {
             subs = "";
         }
         else if (subs.equals("mkdir") && !inQuotes && !insertion && !foundCommand) {
-            //ParsedCommands.add(new MKDIR_Command(subs));
+            ParsedCommands.add(new MkDir_Command());
             subs = "";
         }
         else if (subs.equals("ls") && !inQuotes && !insertion && !foundCommand) {
@@ -169,16 +182,9 @@ public class CommandProcessor {
         }
         if (inQuotes || ParsedCommands.isEmpty())
             throw new InvalidInputException("Invalid Command!\n");
-        // else
-        // {
-        //     Command temp = ParsedCommands.getLast();
-        //     temp.appendOperand(subs);
-        //     ParsedCommands.set(ParsedCommands.size() - 1, temp);
-        // }
+        
         return ParsedCommands;
     }
 
-    // List<Command> getParsedCommand() {
-    //     return this.ParsedCommands;
-    // }
+    
 }
