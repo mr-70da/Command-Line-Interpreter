@@ -12,16 +12,25 @@ public class RmDir_Command implements OptionedCommand {
     private static final Set<String> Options = new HashSet<>(Set.of("v"));
     private String Option;
 
+    private File currentDirectory; //For testing
 
     public RmDir_Command() {
         this.operands = new ArrayList<>();
         this.Option = new String("");
+        this.currentDirectory = new File(System.getProperty("user.dir"));
     }
 
     public RmDir_Command(String oper) {
         this.operands = new ArrayList<>();
         this.operands.add(oper);
         this.Option = new String("");
+        this.currentDirectory = new File(System.getProperty("user.dir"));
+    }
+
+    public RmDir_Command(File currentDirectory) { // constructor for testing
+        this.operands = new ArrayList<>();
+        this.Option = "";
+        this.currentDirectory = currentDirectory;
     }
 
     public void appendOperand(String oper){
@@ -42,7 +51,6 @@ public class RmDir_Command implements OptionedCommand {
 
     }
     private void _removeDirectory(String directoryPath){
-        File currentDirectory = new File(System.getProperty("user.dir"));
         File directory  = new File(currentDirectory,directoryPath);
 
         if (!directory.exists()) {
