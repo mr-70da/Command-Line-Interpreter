@@ -21,6 +21,13 @@ public class Insertion_Command implements Command,WriterCommand,ReaderCommand {
         this.output = "";
         currentDirectory = CLI.getDirr();
     }
+    public Insertion_Command(File directory)
+    {
+        this.currentDirectory = directory;
+        this.output = "";
+        this.input = "";
+        this.arg = "";
+    }
     public void execute(String ...ar) throws Exception
     {
         if(arg.isEmpty())
