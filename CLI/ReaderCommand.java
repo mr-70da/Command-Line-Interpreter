@@ -1,5 +1,5 @@
 package CLI;
 
 public interface ReaderCommand {
-    public String Input();
+    public void Input(String in);
 }

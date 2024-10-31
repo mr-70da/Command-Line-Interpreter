@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class CommandProcessor {
 
-    public static List<Command> CommandParser(String comm) throws Exception {
-        List<Command> ParsedCommands;
-        ParsedCommands = new ArrayList<Command>();
+    public static List<Executable> CommandParser(String comm) throws Exception {
+        List<Executable> ParsedCommands;
+        ParsedCommands = new ArrayList<>();
         String subs = new String("");
         boolean insertion = false;
         boolean inQuotes = false;
@@ -17,10 +17,12 @@ public class CommandProcessor {
         String opt = "";
         
         for (int i = 0; i < comm.length(); ++i) {
+            
             if(escaped)
             {
                 subs+=(comm.charAt(i));
                 escaped = false;
+                continue;
             }
             if (comm.charAt(i) == '\\') {
                 escaped = true;
@@ -43,6 +45,7 @@ public class CommandProcessor {
                 }
                 else if (comm.charAt(i) == quoteType) {
                     inQuotes = false;
+                    quoteType = '\0';
                 }
                 else {
                     subs+= comm.charAt(i);
@@ -51,31 +54,37 @@ public class CommandProcessor {
             }
             if (comm.charAt(i) == '>' && i + 1 < comm.length() && comm.charAt(i + 1) == '>' && !inQuotes) {
                 insertion = true;
-                
-                //ParsedCommands.add(new AppendInsertion());
-                
+                ParsedCommands.add(new InsertAppend_Command());
                 subs = "";
+                i++;
                 continue;
             }
             if (comm.charAt(i) == '>' && !inQuotes) {
                 insertion = true;
-                //ParsedCommands.add(new OverwriteInsertion());
-                
+                ParsedCommands.add(new Insertion_Command());
                 subs = "";
+                continue;
+            }
+            if(comm.charAt(i) == '|' && !inQuotes)
+            {
+                insertion = false;
+                ParsedCommands.add(new Pipe_Command());
+                subs = "";
+                foundCommand = false;
                 continue;
             }
             if (comm.charAt(i) == ' ') {
                 if(!opt.isEmpty())
                 {
-                    Command temp = ParsedCommands.getLast();
+                    Executable temp = ParsedCommands.getLast();
                     if(temp instanceof OptionedCommand)
                     {
                         ((OptionedCommand)temp).setOption(""+opt);
                         ParsedCommands.set(ParsedCommands.size()-1, temp);
                     }   
-                    else
+                    else if(temp instanceof Command)
                     {
-                        temp.appendOperand(opt);
+                        ((Command)temp).appendOperand(opt);
                         ParsedCommands.set(ParsedCommands.size() - 1, temp);   
                     }
                     opt = "";
@@ -129,17 +138,24 @@ public class CommandProcessor {
                     foundCommand = true;
                     continue;
                 }
-                if(!inQuotes && !subs.isEmpty())
+                if(!subs.isEmpty())
                 {
-                    if(ParsedCommands.isEmpty())
-                        throw new InvalidInputException("Invalid Command!\n");
-                    Command temp = ParsedCommands.getLast();
-                    if(temp instanceof CD_Command && !((CD_Command)temp).emptyOperand())
-                        throw new TooManyArgsException("cd: Too Many Arguments!\n");
-                    temp.appendOperand(subs);
-                    ParsedCommands.set(ParsedCommands.size() - 1, temp);
-                    subs = "";
-                    continue;
+                    if(!inQuotes)
+                    {
+                        if(ParsedCommands.isEmpty())
+                            throw new InvalidInputException("Invalid Command!\n");
+                        Executable temp = ParsedCommands.getLast();
+                        if(temp instanceof CD_Command && !((CD_Command)temp).emptyOperand())
+                            throw new TooManyArgsException("cd: Too Many Arguments!\n");
+                        if(temp instanceof Command)
+                        {
+                            ((Command)temp).appendOperand(subs);
+                            ParsedCommands.set(ParsedCommands.size() - 1, temp);
+                        }
+                        subs = "";
+                        continue;
+                    }
+                    subs += comm.charAt(i);
                 }
                 continue;
             }
@@ -154,14 +170,17 @@ public class CommandProcessor {
         }
         if(!opt.isEmpty())
         {
-            Command temp = ParsedCommands.getLast();
+            Executable temp = ParsedCommands.getLast();
             if(temp instanceof OptionedCommand)
             {
                 ((OptionedCommand)temp).setOption(""+opt);
                 ParsedCommands.set(ParsedCommands.size()-1, temp);
-            }   
-            temp.appendOperand(subs);
-            ParsedCommands.set(ParsedCommands.size() - 1, temp);   
+            }
+            if(temp instanceof Command)
+            {
+                ((Command)temp).appendOperand(subs);
+                ParsedCommands.set(ParsedCommands.size() - 1, temp);
+            }
         }
         else if (subs.equals("cd") && !inQuotes && !insertion && !foundCommand) {
             ParsedCommands.add(new CD_Command());
@@ -175,6 +194,7 @@ public class CommandProcessor {
             ParsedCommands.add(new Concat_Command());
             subs = "";
             foundCommand = true;
+
         }
         else if (subs.equals("mkdir") && !inQuotes && !insertion && !foundCommand) {
             ParsedCommands.add(new MkDir_Command());
@@ -188,9 +208,12 @@ public class CommandProcessor {
         {
             if(ParsedCommands.isEmpty())
                 throw new InvalidInputException("Invalid Command!\n");
-            Command temp = ParsedCommands.getLast();
-            temp.appendOperand(subs);
-            ParsedCommands.set(ParsedCommands.size() - 1, temp);
+            Executable temp = ParsedCommands.getLast();
+            if(temp instanceof Command)
+            {
+                ((Command)temp).appendOperand(subs);
+                ParsedCommands.set(ParsedCommands.size() - 1, temp);
+            }
             subs = "";
 
         }

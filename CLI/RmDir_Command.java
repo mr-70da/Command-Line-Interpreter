@@ -37,7 +37,7 @@ public class RmDir_Command implements OptionedCommand {
         this.operands.add(oper);
     }
 
-    public void execute() throws Exception{
+    public void execute(String ...ar) throws Exception{
         removeDirectory();
     }
 

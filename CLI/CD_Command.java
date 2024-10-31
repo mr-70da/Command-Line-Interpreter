@@ -9,7 +9,7 @@ public class CD_Command implements Command {
     public CD_Command(String oper) {
         this.operand = oper;
     }
-    public void execute() throws Exception
+    public void execute(String ...ar) throws Exception
     {
         if(this.operand.isEmpty())
         {

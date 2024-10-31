@@ -29,7 +29,7 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
     {
         return this.output;
     }
-    public void execute() throws Exception
+    public void execute(String ...ar) throws Exception
     {
         File currentDirectory = CLI.getDirr();
         switch (Option) {

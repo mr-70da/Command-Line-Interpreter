@@ -21,7 +21,7 @@ public class Concat_Command implements Command,WriterCommand {
         this.output = new String("");
         currentDirectory = CLI.getDirr();
     }
-    public void execute() throws Exception
+    public void execute(String ...ar) throws Exception
     {
         if(args.isEmpty())
         {

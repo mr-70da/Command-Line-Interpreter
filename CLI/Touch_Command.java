@@ -22,7 +22,7 @@ public class Touch_Command implements Command {
         this.operands = new ArrayList<>();
         currentDirectory = dirr;
     }
-    public void execute() throws Exception
+    public void execute(String ...ar) throws Exception
     {
         if(operands.isEmpty())
         {

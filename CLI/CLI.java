@@ -101,15 +101,39 @@ public class CLI {
         Scanner scanner = new Scanner(System.in);
         String command = scanner.nextLine();
         while (!command.equals("exit")) {
-            List<Command> ParsedInstructions = new ArrayList<>();
+            List<Executable> ParsedInstructions = new ArrayList<>();
+            String outt = new String("");
+            String printed = new String("");
             try{
                 ParsedInstructions = CommandProcessor.CommandParser(command);
-                for(Command comm : ParsedInstructions)
+                for(Executable comm : ParsedInstructions)
                 {
-                    comm.execute();
-                    if(comm instanceof WriterCommand)
-                    {
-                        System.out.println(((WriterCommand)comm).Output());
+                    try{
+                        if(comm instanceof WriterCommand && comm instanceof ReaderCommand)
+                        {
+                            ((ReaderCommand)comm).Input(outt);
+                            comm.execute();
+                            outt = ((WriterCommand)comm).Output();
+                            printed = "";
+                        }
+                        else if(comm instanceof WriterCommand)
+                        {
+                            comm.execute();
+                            outt += ((WriterCommand)comm).Output();
+                            printed = outt;
+                        }
+                        else
+                        {
+                            comm.execute();
+                            outt = "";
+                            printed = "";
+                        }
+                    }
+                    catch(Exception ex){
+                        System.out.println(printed);
+                        System.err.println(ex.getMessage());        
+                        outt = "";
+                        printed = "";
                     }
                 }
             }
@@ -117,8 +141,16 @@ public class CLI {
             {
                 System.err.println(e.getMessage());
             }
-            System.out.print(currentDirectory+"> ");
-            command = scanner.nextLine();
+            finally{
+                if(!printed.isEmpty())
+                {
+                    System.out.println(printed);
+                    outt = "";
+                    printed = "";
+                }
+                System.out.print(currentDirectory+"> ");
+                command = scanner.nextLine();
+            }
         }
         scanner.close();
     }
