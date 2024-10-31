@@ -11,6 +11,11 @@ public class CD_Command implements Command {
     }
     public void execute() throws Exception
     {
+        if(this.operand.isEmpty())
+        {
+            CLI.setDirr(new File(System.getProperty("user.dir")));
+            return;
+        }
         File currentDirectory = CLI.getDirr();
         File newDirectory = new File(currentDirectory.getAbsolutePath()+"/"+this.operand);
         if (newDirectory.isAbsolute()) {

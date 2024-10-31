@@ -42,7 +42,7 @@ public class MkDir_Command implements OptionedCommand {
         makeDirectory();
     }
 
-    void makeDirectory(){
+    void makeDirectory() throws Exception{
         List<String> folders = operands;
         for (String folder : folders) {
             _makeDirectory(folder);
@@ -51,11 +51,12 @@ public class MkDir_Command implements OptionedCommand {
     }
 
 
-    private void _makeDirectory(String directoryPath){
+    private void _makeDirectory(String directoryPath) throws Exception{
     File directory  = new File(currentDirectory,directoryPath);
         if (directory.exists()) {
-            System.err.println("Directory already exists: " + directory.getPath());
-            return;
+            // System.err.println("Directory already exists: " + directory.getPath());
+            // return;
+            throw new DirectoryExistsException("Directory already exists: " + directory.getPath());
         }
         boolean created = directory.mkdir();
         if (created && Option.equals("v")) {

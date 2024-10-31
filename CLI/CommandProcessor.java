@@ -88,7 +88,7 @@ public class CommandProcessor {
                     continue;
                 }
                 if (subs.equals("touch") && !inQuotes && !insertion && !foundCommand) {
-                    //ParsedCommands.add(new TOUCH_Command());
+                    ParsedCommands.add(new Touch_Command());
                     subs = "";
                     foundCommand = true;
                     continue;
@@ -161,7 +161,7 @@ public class CommandProcessor {
             subs = "";
         }
         else if (subs.equals("touch") && !inQuotes && !insertion && !foundCommand) {
-            //ParsedCommands.add(new TOUCH_Command());
+            ParsedCommands.add(new Touch_Command());
             subs = "";
         }
         else if (subs.equals("mkdir") && !inQuotes && !insertion && !foundCommand) {
