@@ -43,6 +43,10 @@ public class MkDir_Command implements OptionedCommand {
     }
 
     void makeDirectory() throws Exception{
+        if(this.operands.isEmpty())
+        {
+            throw new FailedToCreate("Empty Directory Name.\n");
+        }
         List<String> folders = operands;
         for (String folder : folders) {
             _makeDirectory(folder);

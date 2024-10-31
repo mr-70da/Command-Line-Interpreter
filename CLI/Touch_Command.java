@@ -26,13 +26,13 @@ public class Touch_Command implements Command {
     {
         if(operands.isEmpty())
         {
-            throw new FailedToCreateFile("Empty File Name.\n");
+            throw new FailedToCreate("Empty File Name.\n");
         }
         for(String args : operands)
         {
             if(args.isEmpty())
             {
-                throw new FailedToCreateFile("Empty File Name.\n");
+                throw new FailedToCreate("Empty File Name.\n");
             }
             File file = new File(currentDirectory,args);
             if (file.exists()) {
@@ -44,7 +44,7 @@ public class Touch_Command implements Command {
                     //System.out.println(file.getName());
                 } else {
                     //System.out.println("Failed to create file.");
-                    throw new FailedToCreateFile("Failed to create file.\n");
+                    throw new FailedToCreate("Failed to create file.\n");
                 }
             }
         }

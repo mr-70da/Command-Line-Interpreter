@@ -123,7 +123,7 @@ public class CommandProcessor {
                     foundCommand = true;
                     continue;
                 }
-                if(!inQuotes)
+                if(!inQuotes && !subs.isEmpty())
                 {
                     if(ParsedCommands.isEmpty())
                         throw new InvalidInputException("Invalid Command!\n");
@@ -135,6 +135,7 @@ public class CommandProcessor {
                     subs = "";
                     continue;
                 }
+                continue;
             }
             if(!opt.isEmpty())
             {
