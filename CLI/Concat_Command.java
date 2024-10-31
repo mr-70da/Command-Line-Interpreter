@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
 import java.util.Scanner;
+import java.nio.file.Files;
 
 public class Concat_Command implements Command,WriterCommand {
     private List<String> args;
@@ -20,6 +21,12 @@ public class Concat_Command implements Command,WriterCommand {
         this.args.add(operr);
         this.output = new String("");
         currentDirectory = CLI.getDirr();
+    }
+    public Concat_Command(File dirr)
+    {
+        this.args = new ArrayList<>();
+        this.output = new String("");
+        currentDirectory = dirr;
     }
     public void execute(String ...ar) throws Exception
     {
@@ -56,13 +63,16 @@ public class Concat_Command implements Command,WriterCommand {
                 }
                 File directory = new File(currentDirectory,arg);
                 if (directory.exists()) {
-                    Scanner read = new Scanner(directory);
-                    while(read.hasNextLine())
-                    {
-                        output += read.nextLine();
-                        output +="\n";
-                    }
-                    read.close();
+                    output += Files.readString(directory.toPath());
+                    // Scanner read = new Scanner(directory);
+                    // while(read.hasNext())
+                    // {
+                    //     output += read.next();
+                    //     if(read.hasNextLine())
+                    //         output +="\n";
+                    // }
+                    // output = output.substring(0, output.length()-1);
+                    //read.close();
                     //System.out.println("FILE TIMESTAMP UPDATED: "+ file.getName());
                 }
                 else{
