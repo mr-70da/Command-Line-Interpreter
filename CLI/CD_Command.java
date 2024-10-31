@@ -17,7 +17,7 @@ public class CD_Command implements Command {
             return;
         }
         File currentDirectory = CLI.getDirr();
-        File newDirectory = new File(currentDirectory.getAbsolutePath()+"/"+this.operand);
+        File newDirectory = new File(this.operand);
         if (newDirectory.isAbsolute()) {
             if (newDirectory.isDirectory()) {
                 currentDirectory = newDirectory;
@@ -46,4 +46,3 @@ public class CD_Command implements Command {
     }
     
 }
-

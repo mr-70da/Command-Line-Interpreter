@@ -4,7 +4,6 @@ import CLI.Insertion_Command;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.common.StringCache;
 
 import java.io.File;
 import java.nio.file.Files;
