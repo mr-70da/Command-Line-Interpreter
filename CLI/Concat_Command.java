@@ -5,7 +5,7 @@ import java.io.File;
 import java.util.Scanner;
 import java.nio.file.Files;
 
-public class Concat_Command implements Command,WriterCommand {
+public class Concat_Command implements Command,WriterCommand,ReaderCommand {
     private List<String> args;
     private String output;
     private File currentDirectory;
@@ -33,14 +33,29 @@ public class Concat_Command implements Command,WriterCommand {
         if(args.isEmpty())
         {
             Scanner cin = new Scanner(System.in);
-            String in =  cin.nextLine();
-            while(!in.equals("^D"))
+            try
             {
-                output = in;
-                System.out.println(output);
-                in = cin.nextLine();
+                String in =  cin.nextLine();
+                while(!in.equals("^D"))
+                {
+                    output = in;
+                    System.out.println(output);
+                    in = cin.nextLine();
+                    // if(!in.equals("^D"))
+                    //     this.output += in;
+                    
+                }
             }
-            cin.close();
+            catch(Exception ex)
+            {
+
+                if(ar.length != 0)
+                    this.output = ar[0]; 
+            }
+            finally
+            {
+                //cin.close();
+            }
             return;
         }
         else
@@ -84,6 +99,10 @@ public class Concat_Command implements Command,WriterCommand {
     public void appendOperand(String op)
     {
         this.args.add(op);
+    }
+    public void Input(String in)
+    {
+
     }
     public String Output()
     {

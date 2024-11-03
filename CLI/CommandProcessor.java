@@ -118,6 +118,7 @@ public class CommandProcessor {
             if(comm.charAt(i) == '|' && !inQuotes)
             {
                 insertion = false;
+                foundCommand = false;
                 if(!opt.isEmpty())
                 {
                     Executable temp = ParsedCommands.getLast();
@@ -233,6 +234,9 @@ public class CommandProcessor {
                             ((Command)temp).appendOperand(subs);
                             ParsedCommands.set(ParsedCommands.size() - 1, temp);
                         }
+                        // else{
+                        //     //temp.output = "";
+                        // }
                         subs = "";
                         continue;
                     }

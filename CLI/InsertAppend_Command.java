@@ -2,7 +2,7 @@ package CLI;
 import java.io.File;
 import java.io.FileWriter;
 
-public class InsertAppend_Command implements Command,WriterCommand {
+public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand {
     private String arg;
     private String output;
     private File currentDirectory;
@@ -49,8 +49,14 @@ public class InsertAppend_Command implements Command,WriterCommand {
                 FileWriter newF = new FileWriter(directory,true);
                 newF.write(Args[0]);
                 newF.close();
+                this.output = "";
+                if(Args[0].isEmpty())
+                    throw new InvalidInputException("Invalid Command.");
             }
-            this.output = Args[0];
+            else
+            {
+                this.output = Args[0];
+            }
         }
     }
     public void appendOperand(String oper)
@@ -66,7 +72,11 @@ public class InsertAppend_Command implements Command,WriterCommand {
     {
         return InsertAppend_Command.numberOfCommands;
     }
-    public static void ResentInstances()
+    public void Input(String in)
+    {
+
+    }
+    public static void ResetInstances()
     {
         InsertAppend_Command.numberOfCommands = 0;
     }

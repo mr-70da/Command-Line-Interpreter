@@ -2,7 +2,7 @@ package CLI;
 
 import java.io.File;
 
-public class Pipe_Command implements WriterCommand{
+public class Pipe_Command implements WriterCommand,ReaderCommand{
     private String output;
     public Pipe_Command()
     {
@@ -20,5 +20,9 @@ public class Pipe_Command implements WriterCommand{
     {
         if(ar.length != 0)
             this.output = ar[0];
+    }
+    public void Input(String in)
+    {
+        
     }
 }

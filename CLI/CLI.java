@@ -56,19 +56,19 @@ public class CLI {
                         try{
                             if(comm instanceof WriterCommand && comm instanceof ReaderCommand)
                             {
-                                ((ReaderCommand)comm).Input(outt);
-                                if(i == ParsedInstructions.size() - 1)
+                                //((ReaderCommand)comm).Input(outt);
+                                if(i == ParsedInstructions.size() - 1 || ((i + 1) < ParsedInstructions.size() && ParsedInstructions.get(i+1) instanceof Pipe_Command))
                                 {
-                                    InsertAppend_Command.ResentInstances();
-                                    Insertion_Command.ResentInstances();
+                                    InsertAppend_Command.ResetInstances();
+                                    Insertion_Command.ResetInstances();
                                 }
-                                comm.execute();
+                                comm.execute(outt);
                                 outt = ((WriterCommand)comm).Output();
                                 printed = "";
                             }
                             else if(comm instanceof WriterCommand)
                             {
-                                comm.execute();
+                                comm.execute(outt);
                                 outt += ((WriterCommand)comm).Output();
                                 printed = outt;
                             }
@@ -100,6 +100,7 @@ public class CLI {
                         printed = "";
                     }
                     System.out.print(currentDirectory+"> ");
+
                     command = scanner.nextLine();
                 }
 

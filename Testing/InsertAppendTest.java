@@ -24,7 +24,7 @@ public class InsertAppendTest {
     @AfterEach
     void cleanUp() {
         deleteDirectory(testDirectory);
-        InsertAppend_Command.ResentInstances();
+        InsertAppend_Command.ResetInstances();
     }
 
     private void deleteDirectory(File file) {

@@ -57,6 +57,11 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                             }
                         }    
                     }
+                    else if(directory.isFile())
+                    {
+                        this.output += directory.getName();
+                        this.output += "\n";
+                    }
                 }
                 else
                 {
@@ -79,10 +84,15 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                                 }
                             }  
                         }
+                        else if(directory.isFile())
+                        {
+                            this.output += directory.getName();
+                            this.output += "\n";
+                        }
                         else {
                             throw new InvalidPathException("Not a Valid Path");
                         }
-                        this.output+="\n";
+                        //this.output+="\n";
                     }
                 }      
                 break;
@@ -127,6 +137,11 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                                     }
                                 }
                             }
+                        }
+                        else if(directory.isFile())
+                        {
+                            this.output += directory.getName();
+                            this.output += "\n";
                         }
                         else {
                             throw new InvalidPathException("Not a Valid Path");
@@ -174,10 +189,15 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                                 }
                             }  
                         }
+                        else if(directory.isFile())
+                        {
+                            this.output += directory.getName();
+                            this.output += "\n";
+                        }
                         else {
                             throw new InvalidPathException("Not a Valid Path");
                         }
-                        this.output+="\n";
+                        //this.output+="\n";
                     }
                 }
                 break;
