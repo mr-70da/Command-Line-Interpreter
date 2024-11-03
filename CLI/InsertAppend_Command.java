@@ -7,12 +7,14 @@ public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand
     private String output;
     private String input;
     private File currentDirectory;
+    private static int numberOfCommands = 0;
     public InsertAppend_Command()
     {
         arg = new String("");
         this.input = "";
         this.output = "";
         currentDirectory = CLI.getDirr();
+        InsertAppend_Command.numberOfCommands += 1;
     }
     public InsertAppend_Command(String ar)
     {
@@ -20,6 +22,7 @@ public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand
         this.input = "";
         this.output = "";
         currentDirectory = CLI.getDirr();
+        InsertAppend_Command.numberOfCommands += 1;
     }
     public InsertAppend_Command(File dir)
     {
@@ -27,6 +30,7 @@ public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand
         this.input = "";
         this.output = "";
         currentDirectory = dir;
+        InsertAppend_Command.numberOfCommands += 1;
     }
     public void execute(String ...Args) throws Exception
     {
@@ -42,10 +46,13 @@ public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand
                 throw new FailedToCreate("Failed To Create File.\n");
             }
         }
-        FileWriter newF = new FileWriter(directory,true);
-        newF.write(input);
+        if(InsertAppend_Command.numberOfCommands <= 1)
+        {
+            FileWriter newF = new FileWriter(directory,true);
+            newF.write(input);
+            newF.close();
+        }
         this.output = input;
-        newF.close();
     }
     public void appendOperand(String oper)
     {
@@ -60,5 +67,12 @@ public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand
     {
         this.input = in;
     }
-
+    public static int getInstances()
+    {
+        return InsertAppend_Command.numberOfCommands;
+    }
+    public static void ResentInstances()
+    {
+        InsertAppend_Command.numberOfCommands = 0;
+    }
 }

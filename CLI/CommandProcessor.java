@@ -54,6 +54,31 @@ public class CommandProcessor {
             }
             if (comm.charAt(i) == '>' && i + 1 < comm.length() && comm.charAt(i + 1) == '>' && !inQuotes) {
                 insertion = true;
+                if(!opt.isEmpty())
+                {
+                    Executable temp = ParsedCommands.getLast();
+                    if(temp instanceof OptionedCommand)
+                    {
+                        ((OptionedCommand)temp).setOption(""+opt);
+                        ParsedCommands.set(ParsedCommands.size()-1, temp);
+                    }   
+                    else if(temp instanceof Command)
+                    {
+                        ((Command)temp).appendOperand(opt);
+                        ParsedCommands.set(ParsedCommands.size() - 1, temp);
+                        subs = "";
+                    }
+                    opt = "";   
+                }
+                if(!subs.isEmpty())
+                {
+                    Executable temp = ParsedCommands.getLast();   
+                    if(temp instanceof Command)
+                    {
+                        ((Command)temp).appendOperand(subs);
+                        ParsedCommands.set(ParsedCommands.size() - 1, temp);   
+                    }
+                }
                 ParsedCommands.add(new InsertAppend_Command());
                 subs = "";
                 i++;
@@ -61,6 +86,31 @@ public class CommandProcessor {
             }
             if (comm.charAt(i) == '>' && !inQuotes) {
                 insertion = true;
+                if(!opt.isEmpty())
+                {
+                    Executable temp = ParsedCommands.getLast();
+                    if(temp instanceof OptionedCommand)
+                    {
+                        ((OptionedCommand)temp).setOption(""+opt);
+                        ParsedCommands.set(ParsedCommands.size()-1, temp);
+                    }   
+                    else if(temp instanceof Command)
+                    {
+                        ((Command)temp).appendOperand(opt);
+                        ParsedCommands.set(ParsedCommands.size() - 1, temp);
+                        subs = ""; 
+                    }
+                    opt = "";
+                }
+                if(!subs.isEmpty())
+                {
+                    Executable temp = ParsedCommands.getLast();   
+                    if(temp instanceof Command)
+                    {
+                        ((Command)temp).appendOperand(subs);
+                        ParsedCommands.set(ParsedCommands.size() - 1, temp);   
+                    }
+                }
                 ParsedCommands.add(new Insertion_Command());
                 subs = "";
                 continue;
@@ -68,6 +118,31 @@ public class CommandProcessor {
             if(comm.charAt(i) == '|' && !inQuotes)
             {
                 insertion = false;
+                if(!opt.isEmpty())
+                {
+                    Executable temp = ParsedCommands.getLast();
+                    if(temp instanceof OptionedCommand)
+                    {
+                        ((OptionedCommand)temp).setOption(""+opt);
+                        ParsedCommands.set(ParsedCommands.size()-1, temp);
+                    }   
+                    else if(temp instanceof Command)
+                    {
+                        ((Command)temp).appendOperand(opt);
+                        ParsedCommands.set(ParsedCommands.size() - 1, temp);   
+                    }
+                    opt = "";
+                    
+                }
+                if(!subs.isEmpty())
+                {
+                    Executable temp = ParsedCommands.getLast();   
+                    if(temp instanceof Command)
+                    {
+                        ((Command)temp).appendOperand(subs);
+                        ParsedCommands.set(ParsedCommands.size() - 1, temp);   
+                    }
+                }
                 ParsedCommands.add(new Pipe_Command());
                 subs = "";
                 foundCommand = false;
@@ -225,7 +300,6 @@ public class CommandProcessor {
                 ParsedCommands.set(ParsedCommands.size() - 1, temp);
             }
             subs = "";
-
         }
         if (inQuotes || ParsedCommands.isEmpty())
             throw new InvalidInputException("Invalid Command!\n");

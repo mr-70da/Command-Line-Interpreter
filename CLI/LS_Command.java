@@ -96,7 +96,9 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                             Arrays.sort(files,Collections.reverseOrder());
                             for ( File file : files) {
                                 if ( !file.isHidden()) {
-                                    System.out.println(file.getName());
+                                    // System.out.println(file.getName());
+                                    this.output += file.getName();
+                                    this.output += "\n";
                                 }
                             }
                         }
@@ -119,7 +121,9 @@ public class LS_Command  implements OptionedCommand,WriterCommand {
                                 Arrays.sort(files,Collections.reverseOrder());
                                 for ( File file : files) {
                                     if ( !file.isHidden()) {
-                                        System.out.println(file.getName());
+                                        //System.out.println(file.getName());
+                                        this.output += file.getName();
+                                        this.output += "\n";
                                     }
                                 }
                             }

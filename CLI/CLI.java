@@ -50,12 +50,18 @@ public class CLI {
                 String printed = new String("");
                 try{
                     ParsedInstructions = CommandProcessor.CommandParser(command);
+                    int i = 0;
                     for(Executable comm : ParsedInstructions)
                     {
                         try{
                             if(comm instanceof WriterCommand && comm instanceof ReaderCommand)
                             {
                                 ((ReaderCommand)comm).Input(outt);
+                                if(i == ParsedInstructions.size() - 1)
+                                {
+                                    InsertAppend_Command.ResentInstances();
+                                    Insertion_Command.ResentInstances();
+                                }
                                 comm.execute();
                                 outt = ((WriterCommand)comm).Output();
                                 printed = "";
@@ -79,6 +85,7 @@ public class CLI {
                             outt = "";
                             printed = "";
                         }
+                        i++;
                     }
                 }
                 catch(Exception e)
