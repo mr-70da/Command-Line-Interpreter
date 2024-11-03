@@ -2,16 +2,14 @@ package CLI;
 import java.io.File;
 import java.io.FileWriter;
 
-public class Insertion_Command implements Command,WriterCommand,ReaderCommand {
+public class Insertion_Command implements Command,WriterCommand{
     private String arg;
     private String output;
-    private String input;
     private File currentDirectory;
     private static int numberOfCommands = 0;
     public Insertion_Command()
     {
         arg = new String("");
-        this.input = "";
         this.output = "";
         currentDirectory = CLI.getDirr();
         Insertion_Command.numberOfCommands += 1;
@@ -19,7 +17,6 @@ public class Insertion_Command implements Command,WriterCommand,ReaderCommand {
     public Insertion_Command(String ar)
     {
         this.arg = ar;
-        this.input = "";
         this.output = "";
         currentDirectory = CLI.getDirr();
         Insertion_Command.numberOfCommands += 1;
@@ -28,7 +25,6 @@ public class Insertion_Command implements Command,WriterCommand,ReaderCommand {
     {
         this.currentDirectory = directory;
         this.output = "";
-        this.input = "";
         this.arg = "";
         Insertion_Command.numberOfCommands += 1;
     }
@@ -47,13 +43,16 @@ public class Insertion_Command implements Command,WriterCommand,ReaderCommand {
         {
             throw new FailedToCreate("Failed To Create File.\n");
         }
-        if(Insertion_Command.numberOfCommands <= 1)
+        if(ar.length != 0)
         {
-            FileWriter newF = new FileWriter(directory);
-            newF.write(input);
-            newF.close();
+            if(Insertion_Command.numberOfCommands <= 1)
+            {
+                FileWriter newF = new FileWriter(directory);
+                newF.write(ar[0]);
+                newF.close();
+            }
+            this.output = ar[0];
         }
-        this.output = input;
     }
     public void appendOperand(String oper)
     {
@@ -63,10 +62,6 @@ public class Insertion_Command implements Command,WriterCommand,ReaderCommand {
     public String Output()
     {
         return this.output;
-    }
-    public void Input(String in)
-    {
-        this.input = in;
     }
     public static int getInstances()
     {

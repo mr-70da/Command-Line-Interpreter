@@ -24,6 +24,7 @@ public class InsertAppendTest {
     @AfterEach
     void cleanUp() {
         deleteDirectory(testDirectory);
+        InsertAppend_Command.ResentInstances();
     }
 
     private void deleteDirectory(File file) {
@@ -39,8 +40,7 @@ public class InsertAppendTest {
     void SuccessfulInsertion() throws Exception
     {
         insertAppendCommand.appendOperand("test.txt");
-        insertAppendCommand.Input("testing content");
-        insertAppendCommand.execute();
+        insertAppendCommand.execute("testing content");
         File file = new File(testDir,"test.txt");
         String s = Files.readString(file.toPath());
         assertTrue(file.exists(),"File is not created.\n");
@@ -52,8 +52,7 @@ public class InsertAppendTest {
         File file = new File(testDir,"test.txt");
         Files.writeString(file.toPath(),"Test Number 2");
         insertAppendCommand.appendOperand("test.txt");
-        insertAppendCommand.Input("New Content");
-        insertAppendCommand.execute();
+        insertAppendCommand.execute("New Content");
         String s = Files.readString(file.toPath());
         assertEquals(s,"Test Number 2New Content","Content not Concatenated Properly!");
     }

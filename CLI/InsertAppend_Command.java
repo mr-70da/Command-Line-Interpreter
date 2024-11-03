@@ -2,16 +2,14 @@ package CLI;
 import java.io.File;
 import java.io.FileWriter;
 
-public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand {
+public class InsertAppend_Command implements Command,WriterCommand {
     private String arg;
     private String output;
-    private String input;
     private File currentDirectory;
     private static int numberOfCommands = 0;
     public InsertAppend_Command()
     {
         arg = new String("");
-        this.input = "";
         this.output = "";
         currentDirectory = CLI.getDirr();
         InsertAppend_Command.numberOfCommands += 1;
@@ -19,7 +17,6 @@ public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand
     public InsertAppend_Command(String ar)
     {
         this.arg = ar;
-        this.input = "";
         this.output = "";
         currentDirectory = CLI.getDirr();
         InsertAppend_Command.numberOfCommands += 1;
@@ -27,7 +24,6 @@ public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand
     public InsertAppend_Command(File dir)
     {
         this.arg = "";
-        this.input = "";
         this.output = "";
         currentDirectory = dir;
         InsertAppend_Command.numberOfCommands += 1;
@@ -46,13 +42,16 @@ public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand
                 throw new FailedToCreate("Failed To Create File.\n");
             }
         }
-        if(InsertAppend_Command.numberOfCommands <= 1)
+        if(Args.length != 0)
         {
-            FileWriter newF = new FileWriter(directory,true);
-            newF.write(input);
-            newF.close();
+            if(InsertAppend_Command.numberOfCommands <= 1)
+            {
+                FileWriter newF = new FileWriter(directory,true);
+                newF.write(Args[0]);
+                newF.close();
+            }
+            this.output = Args[0];
         }
-        this.output = input;
     }
     public void appendOperand(String oper)
     {
@@ -62,10 +61,6 @@ public class InsertAppend_Command implements Command,WriterCommand,ReaderCommand
     public String Output()
     {
         return this.output;
-    }
-    public void Input(String in)
-    {
-        this.input = in;
     }
     public static int getInstances()
     {

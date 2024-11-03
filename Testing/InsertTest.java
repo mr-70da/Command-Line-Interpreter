@@ -24,6 +24,7 @@ public class InsertTest {
     @AfterEach
     void cleanUp() {
         deleteDirectory(testDirectory);
+        Insertion_Command.ResentInstances();
     }
 
     private void deleteDirectory(File file) {
@@ -39,8 +40,8 @@ public class InsertTest {
     void SuccessfulInsertion() throws Exception
     {
         insertCommand.appendOperand("test.txt");
-        insertCommand.Input("testing content");
-        insertCommand.execute();
+        //insertCommand.Input();
+        insertCommand.execute("testing content");
         File file = new File(testDir,"test.txt");
         String s = Files.readString(file.toPath());
         assertTrue(file.exists(),"File is not created.\n");
@@ -52,8 +53,8 @@ public class InsertTest {
         File file = new File(testDir,"test.txt");
         Files.writeString(file.toPath(),"Test Number 2");
         insertCommand.appendOperand("test.txt");
-        insertCommand.Input("New Content");
-        insertCommand.execute();
+        //insertCommand.Input();
+        insertCommand.execute("New Content");
         String s = Files.readString(file.toPath());
         assertEquals(s,"New Content","Content not modified!");
     }
