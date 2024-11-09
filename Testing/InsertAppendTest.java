@@ -1,5 +1,6 @@
 package Testing;
 
+import CLI.Concat_Command;
 import CLI.InsertAppend_Command;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,5 +56,20 @@ public class InsertAppendTest {
         insertAppendCommand.execute("New Content");
         String s = Files.readString(file.toPath());
         assertEquals(s,"Test Number 2New Content","Content not Concatenated Properly!");
+    }
+    @Test
+    void Cat_append() throws Exception
+    {
+        File file = new File(testDir,"test.txt");
+        File file2 = new File(testDir,"test2.txt");
+        Files.writeString(file.toPath(),"Content 1\n");
+        Files.writeString(file2.toPath(),"Content 2");
+        Concat_Command catCommand = new Concat_Command(testDirectory);
+        catCommand.appendOperand(file2.getName());
+        catCommand.execute();
+        insertAppendCommand.appendOperand(file.getName());
+        insertAppendCommand.execute(catCommand.Output());
+        catCommand.execute(file.getName());
+        assertEquals("Content 1\nContent 2", catCommand.Output());
     }
 }

@@ -5,7 +5,7 @@ import java.io.File;
 import java.util.Scanner;
 import java.nio.file.Files;
 
-public class Concat_Command implements Command,WriterCommand,ReaderCommand {
+public class Concat_Command implements Command,WriterCommand {
     private List<String> args;
     private String output;
     private File currentDirectory;
@@ -30,6 +30,18 @@ public class Concat_Command implements Command,WriterCommand,ReaderCommand {
     }
     public void execute(String ...ar) throws Exception
     {
+        if(ar.length != 0 && !ar[0].isEmpty())
+        {
+            this.output = "";
+            File directory = new File(currentDirectory,ar[0]);
+            if (directory.exists() && directory.isFile()) {
+                output += Files.readString(directory.toPath());
+            }
+            else{
+                throw new InvalidPathException("File doesn't exist!\n");
+            }
+            return;
+        }
         if(args.isEmpty())
         {
             Scanner cin = new Scanner(System.in);
@@ -41,9 +53,6 @@ public class Concat_Command implements Command,WriterCommand,ReaderCommand {
                     output = in;
                     System.out.println(output);
                     in = cin.nextLine();
-                    // if(!in.equals("^D"))
-                    //     this.output += in;
-                    
                 }
             }
             catch(Exception ex)
@@ -52,10 +61,10 @@ public class Concat_Command implements Command,WriterCommand,ReaderCommand {
                 if(ar.length != 0)
                     this.output = ar[0]; 
             }
-            finally
-            {
-                //cin.close();
-            }
+            // finally
+            // {
+            //     //cin.close();
+            // }
             return;
         }
         else
@@ -64,33 +73,25 @@ public class Concat_Command implements Command,WriterCommand,ReaderCommand {
             {
                 if(arg.isEmpty())
                 {
-                    Scanner cin = new Scanner(System.in);
-                    String in =  cin.nextLine();
-                    while(!in.equals("^D"))
-                    {
-                        output = in;
-                        System.out.println(output);
-                        in = cin.nextLine();
-                    }
-                    cin.close();
-                    output="";
-                    break;
+                    // Scanner cin = new Scanner(System.in);
+                    // String in =  cin.nextLine();
+                    // while(!in.equals("^D"))
+                    // {
+                    //     output = in;
+                    //     System.out.println(output);
+                    //     in = cin.nextLine();
+                    // }
+                    // cin.close();
+                    // output="";
+                    // break;
+                    continue;
                 }
                 File directory = new File(currentDirectory,arg);
-                if (directory.exists()) {
+                if (directory.exists() && directory.isFile()) {
                     output += Files.readString(directory.toPath());
-                    // Scanner read = new Scanner(directory);
-                    // while(read.hasNext())
-                    // {
-                    //     output += read.next();
-                    //     if(read.hasNextLine())
-                    //         output +="\n";
-                    // }
-                    // output = output.substring(0, output.length()-1);
-                    //read.close();
-                    //System.out.println("FILE TIMESTAMP UPDATED: "+ file.getName());
                 }
                 else{
+                    this.output = "";
                     throw new InvalidPathException("File doesn't exist!\n");
                 }
             }
@@ -99,10 +100,6 @@ public class Concat_Command implements Command,WriterCommand,ReaderCommand {
     public void appendOperand(String op)
     {
         this.args.add(op);
-    }
-    public void Input(String in)
-    {
-
     }
     public String Output()
     {

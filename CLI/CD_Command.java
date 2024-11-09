@@ -17,6 +17,16 @@ public class CD_Command implements Command {
             return;
         }
         File currentDirectory = CLI.getDirr();
+        if(this.operand.equals(".."))
+        {
+            String dirr = currentDirectory.getAbsolutePath().toString();
+            int i =  dirr.length() - 1;
+            while(dirr.charAt(i) != '/')
+            {
+                i--;
+            }
+            this.operand = dirr.substring(0, i);
+        }
         File newDirectory = new File(this.operand);
         if (newDirectory.isAbsolute()) {
             if (newDirectory.isDirectory()) {

@@ -68,7 +68,7 @@ public class CLI {
                             }
                             else if(comm instanceof WriterCommand)
                             {
-                                comm.execute(outt);
+                                comm.execute();
                                 outt += ((WriterCommand)comm).Output();
                                 printed = outt;
                             }

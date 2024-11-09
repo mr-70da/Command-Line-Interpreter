@@ -5,6 +5,7 @@ import java.io.FileWriter;
 public class Insertion_Command implements Command,WriterCommand,ReaderCommand{
     private String arg;
     private String output;
+    // private String input;
     private File currentDirectory;
     private static int numberOfCommands = 0;
     public Insertion_Command()
